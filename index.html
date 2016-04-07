@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+    <div>
+      This is what you said: <span id="greeting"></span>
+    </div>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.3.0/annyang.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/speechkitt.min.js"></script>
+    <script>
+    if (annyang) {
+
+      var greeting = function(text) {
+        $('#greeting').text(text);
+      };
+
+      commands = {
+        '*text': greeting
+      };
+
+      // Add our commands to annyang
+      annyang.addCommands(commands);
+
+      annyang.debug(true);
+
+      annyang.start();
+    }
+
+
+    </script>
+
+  </body>
+</html>

@@ -10,6 +10,8 @@
     <title>Hello Niles!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
     <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+
   </head>
 
   <body>
@@ -31,6 +33,5 @@
       </main>
 
     </div> <!-- /container -->
-    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

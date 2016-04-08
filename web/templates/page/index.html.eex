@@ -1,13 +1,14 @@
-<div class="jumbotron">
-  <h2>This is what you said: <span id="greeting"></span></h2>
-</div>
+<div id="elm-main"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.3.0/annyang.min.js"></script>
 <script>
+var elmDiv = document.getElementById('elm-main')
+  , elmApp = Elm.embed(Elm.Main, elmDiv, {lastSaidChanged: ""});
+
   if (annyang) {
 
     var greeting = function(text) {
-      $('#greeting').text(text);
+      elmApp.ports.lastSaidChanged.send(text)
     };
 
     commands = {

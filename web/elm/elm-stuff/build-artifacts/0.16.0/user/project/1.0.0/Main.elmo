@@ -1,0 +1,73 @@
+Elm.Main = Elm.Main || {};
+Elm.Main.make = function (_elm) {
+   "use strict";
+   _elm.Main = _elm.Main || {};
+   if (_elm.Main.values) return _elm.Main.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Effects = Elm.Effects.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $StartApp = Elm.StartApp.make(_elm),
+   $Task = Elm.Task.make(_elm);
+   var _op = {};
+   var lastSaidChanged = Elm.Native.Port.make(_elm).inboundSignal("lastSaidChanged",
+   "String",
+   function (v) {
+      return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
+      v);
+   });
+   var view = F2(function (address,model) {
+      return A2($Html.div,
+      _U.list([$Html$Attributes.$class("jumbotron")]),
+      _U.list([A2($Html.h2,
+      _U.list([]),
+      _U.list([$Html.text("This is what you said: ")
+              ,A2($Html.span,
+              _U.list([$Html$Attributes.id("greeting")]),
+              _U.list([$Html.text(model.lastSaid)]))]))]));
+   });
+   var update = F2(function (action,model) {
+      var _p0 = action;
+      if (_p0.ctor === "SetLastSaid") {
+            return {ctor: "_Tuple2"
+                   ,_0: {lastSaid: _p0._0}
+                   ,_1: $Effects.none};
+         } else {
+            return {ctor: "_Tuple2",_0: model,_1: $Effects.none};
+         }
+   });
+   var SetLastSaid = function (a) {
+      return {ctor: "SetLastSaid",_0: a};
+   };
+   var setLastSaid = A2($Signal.map,SetLastSaid,lastSaidChanged);
+   var incomingActions = setLastSaid;
+   var NoOp = {ctor: "NoOp"};
+   var init = {ctor: "_Tuple2"
+              ,_0: {lastSaid: ""}
+              ,_1: $Effects.none};
+   var Model = function (a) {    return {lastSaid: a};};
+   var app = $StartApp.start({init: init
+                             ,update: update
+                             ,view: view
+                             ,inputs: _U.list([incomingActions])});
+   var main = app.html;
+   var tasks = Elm.Native.Task.make(_elm).performSignal("tasks",
+   app.tasks);
+   return _elm.Main.values = {_op: _op
+                             ,app: app
+                             ,main: main
+                             ,Model: Model
+                             ,init: init
+                             ,NoOp: NoOp
+                             ,SetLastSaid: SetLastSaid
+                             ,update: update
+                             ,view: view
+                             ,setLastSaid: setLastSaid
+                             ,incomingActions: incomingActions};
+};

@@ -24,8 +24,10 @@ var elmDiv = document.getElementById('elm-main')
   }
 
   elmApp.ports.wordsSaid.subscribe(text => {
+    annyang.pause();
     var msg = new SpeechSynthesisUtterance("What I heard you say is " + text);
     msg.voice = speechSynthesis.getVoices().filter(function(voice) { return voice.name == 'Google UK English Male'; })[0];
     speechSynthesis.speak(msg);
+    annyang.resume();
   })
 </script>

@@ -44,7 +44,7 @@ update : Action -> Model -> (Model, Effects Action)
 update action model =
   case action of
     SetLastSaid said ->
-      ({lastSaid = said}, Effects.none)
+      ({lastSaid = said}, sendWordsSaid said)
     NoOp ->
       (model, Effects.none)
 
@@ -58,11 +58,25 @@ view address model =
           [ id "greeting" ]
           [ text model.lastSaid ]
         ]
+      ,h3 []
+        [
+          text "Or"
+          ,Html.form [ ]
+            [ input [ placeholder "type text", name "input" ] [] ]
+        ]
     ]
 
 -- SIGNALS
 
 port lastSaidChanged : Signal String
+
+port wordsSaid : Signal String
+port wordsSaid =
+  wordsSaidMailBox.signal
+
+wordsSaidMailBox : Signal.Mailbox String
+wordsSaidMailBox =
+  Signal.mailbox ""
 
 setLastSaid : Signal Action
 setLastSaid =
@@ -71,3 +85,12 @@ setLastSaid =
 incomingActions : Signal Action
 incomingActions =
   setLastSaid
+
+
+-- ACTIONS
+
+sendWordsSaid : String -> Effects Action
+sendWordsSaid text =
+  Signal.send wordsSaidMailBox.address text
+    |> Effects.task
+    |> Effects.map (always NoOp)
